@@ -1,13 +1,11 @@
 import secrets
 import os
 from dotenv import load_dotenv
-from pydantic import computed_field
-from pydantic.v1 import BaseSettings
-from pydantic_core import MultiHostUrl
+from pydantic import BaseModel, computed_field
 
 load_dotenv()
 
-class Settings(BaseSettings):
+class Settings(BaseModel):
     API_V1_STR: str = "/api/v1"
     SECRET_KEY: str = secrets.token_urlsafe(32)
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8
@@ -20,15 +18,8 @@ class Settings(BaseSettings):
 
     @computed_field
     @property
-    def SQLALCHEMY_DATABASE_URI(self):
-        return MultiHostUrl.build(
-            scheme="mysql+pymysql",
-            username=self.DB_USER,
-            password=self.DB_PASSWORD,
-            host=self.DB_HOST,
-            port=self.DB_PORT,
-            path=self.DB_NAME
-        )
+    def SQLALCHEMY_DATABASE_URI(self) -> str:
+        return f'mysql://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}'
 
 
 settings = Settings()

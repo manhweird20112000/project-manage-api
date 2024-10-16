@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "fast-api-boilerplate"
+name = "project-manage-api"
 version = "0.1.0"
 description = ""
 authors = ["Đinh Mạnh <dmanh20112000@gmail.com>"]
