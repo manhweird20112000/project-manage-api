@@ -1,9 +1,9 @@
 from sqlalchemy import Column, Integer, String
 
-from app.core.database.database import Base
+from app.core.database.mixin import Base, TrackTimeMixin
 
 
-class User(Base):
+class User(Base, TrackTimeMixin):
     __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True, autoincrement=True, index=True)
