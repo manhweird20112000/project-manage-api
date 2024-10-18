@@ -5,7 +5,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from app.api.main import api_router
-from app.core.config import settings
+from app.core.secret.config import settings
 
 app = FastAPI()
 
