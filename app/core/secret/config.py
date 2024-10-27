@@ -19,7 +19,7 @@ class Settings(BaseModel):
     @computed_field
     @property
     def SQLALCHEMY_DATABASE_URI(self) -> str:
-        return f'mysql://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}'
+        return f'mysql+pymysql://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}'
 
 
 settings = Settings()
