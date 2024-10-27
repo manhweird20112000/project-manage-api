@@ -1,10 +1,10 @@
-from datetime import datetime
 
-from app import Admin
+
 from app.core.repositories import ICrudRepository
+from app.models import TokenBlackList
 
 
-class AdminCrudRepository(ICrudRepository):
+class TokenBlacklistCrudRepository(ICrudRepository):
     def __init__(self, session):
         self.session = session
 
@@ -13,20 +13,19 @@ class AdminCrudRepository(ICrudRepository):
         self.session.commit()
         self.session.refresh(entity)
 
-    def get_by_id(self, entity_id: int) -> Admin:
+    def get_by_id(self, entity_id: int) -> TokenBlackList:
         return self.session.query().filter_by(id=entity_id, delete_at=None).first()
 
-    def find_by_one(self, **kwargs: Admin) -> Admin:
-        return self.session.query(Admin).filter_by(**kwargs, delete_at=None).first()
+    def find_by_one(self, **kwargs) -> TokenBlackList:
+        return self.session.query(TokenBlackList).filter_by(**kwargs).first()
 
-    def update(self, entity: Admin):
+    def update(self, entity: TokenBlackList):
         self.session.commit()
 
     def soft_delete(self, entity_id: int):
         user = self.get_by_id(entity_id)
         if user:
-            user.delete_at = datetime.now()
-            self.update(user)
+            self.delete(user)
         else:
             raise Exception('Not Found.')
 

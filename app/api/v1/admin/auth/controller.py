@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 
 from app.api.v1.admin.auth.dto.login import LoginDto
 from app.api.v1.admin.auth.service import AuthService
@@ -13,5 +13,9 @@ async def exec_login(session: SessionDep, dto: LoginDto):
     return data
 
 @router.post('/logout')
-def exec_logout():
-    return {}
+async def exec_logout(request: Request, session: SessionDep):
+    bearer_token = request.headers.get('Authorization')
+    token = bearer_token.split(" ")[1]
+    service = AuthService(session)
+    data = await service.logout(token)
+    return data

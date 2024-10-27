@@ -1,7 +1,8 @@
 import bcrypt
 from app.api.v1.admin.auth.dto.login import LoginDto
+from app.core.cache.service import set_key, get_key
 from app.core.exceptions.http_exceptions import NotFoundException, UnauthorizedException, HttpSuccessException
-from app.core.security.jwt import create_access_token
+from app.core.security.jwt import create_access_token, blacklist_token
 from app.repositories.admin.crud import AdminCrudRepository
 
 
@@ -38,4 +39,11 @@ class AuthService:
                 **data,
                 'access_token': access_token
             }
+        )
+
+    async def logout(self, token: str):
+        await blacklist_token(token, self.session)
+        raise HttpSuccessException(
+            detail=True,
+            msg='システムから正常にログアウトしました。'
         )

@@ -1,3 +1,4 @@
+import asyncio
 import uvicorn
 from fastapi import FastAPI, status
 from fastapi.encoders import jsonable_encoder
@@ -11,7 +12,6 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from app.api.main import api_router
 from app.core.secret.config import settings
 from app.core.validations.utils import format_validation_errors
-
 app = FastAPI()
 
 app.mount('/static', StaticFiles(directory='static'), name='static')
